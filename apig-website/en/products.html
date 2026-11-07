@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-catalogue data-per-page="24" data-label-prev="Previous" data-label-next="Next" data-label-page="Page {n}" data-label-info="Showing {from}-{to} of {total} products">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,10 +25,10 @@
 <header class="site-header">
   <div class="shell bar">
     <a class="brand" href="index.html">
-      <span class="brand-mark">AP</span>
+      <span class="brand-mark">API</span>
       <span class="brand-text">
-        <span class="brand-name">ASIA PACIFIC INDUSTRY GROUP</span>
-        <span class="brand-sub">BOPP &middot; BOPET &middot; CPP FILMS</span>
+        <span class="brand-name">ASIA PACIFIC INDUSTRY GROUP -BLOG WEBSITE</span>
+        <span class="brand-sub">BOPP .BOPET.BOPS FILMS. &amp; THEMRAL FILM. ADHESIVE TAPE</span>
       </span>
     </a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false">
@@ -52,7 +52,7 @@
     <p class="lede">Filter by family, or search by grade, model or application.</p>
   </div>
 </section>
-<section class="section">
+<section class="section" data-catalogue>
   <div class="shell">
     <div class="filter-bar" data-filter-root>
       <button type="button" class="on" data-cat="all">All</button><button type="button" data-cat="bopp-film">BOPP Film</button><button type="button" data-cat="tape-jumbo">Adhesive Tape Jumbo Rolls</button><button type="button" data-cat="tape-finished">Adhesive Tape Finished Rolls</button><button type="button" data-cat="bopet-film">BOPET Film</button><button type="button" data-cat="bopa-bops-cpp">BOPA, BOPS &amp; CPP Film</button><button type="button" data-cat="ttr-labels">Thermal Transfer Ribbon, Labels &amp; Barcode Printers</button><button type="button" data-cat="pof-pvc-pe">POF, PVC &amp; PE Film and Bags</button><button type="button" data-cat="paper-inkjet">LWC, Copy, Photo Paper &amp; Inkjet Supplies</button><button type="button" data-cat="tear-tape-alu">Tear Tape, Clips, Belt &amp; Aluminium Foil</button><button type="button" data-cat="bopp-products">BOPP Products</button><button type="button" data-cat="coating-film">Coating Film</button><button type="button" data-cat="bestsellers">Best-sellers</button><button type="button" data-cat="electronic">Electronic Products</button><button type="button" data-cat="equipment">Machine Equipment &amp; Parts</button><button type="button" data-cat="deep-processing">Deep-processing Packaging Film</button><button type="button" data-cat="bopet-45">4.5 µm BOPET Film</button>
@@ -1791,6 +1791,10 @@
   </div>
 </a></div>
     <p class="empty" data-empty style="display:none">No product matches that filter yet — try another family or clear the search.</p>
+    <nav class="pager" data-pager aria-label="Product catalogue pages">
+      <div class="pager-inner" data-pager-list></div>
+      <p class="pager-info" data-pager-info></p>
+    </nav>
   </div>
 </section>
 <section class="section tint">
@@ -1808,7 +1812,7 @@
   <div class="shell">
     <div class="footer-grid">
       <div class="footer-col footer-about">
-        <span class="brand"><span class="brand-mark">AP</span></span>
+        <span class="brand"><span class="brand-mark">API</span></span>
         <p>Precision-engineered BOPP, BOPET &amp;amp; CPP films for global packaging.</p>
         <p style="font-size:13.5px">No.3399 Luzhou Ave., Baohe Industrial District, 230051, Hefei city, Anhui Province, P.R. China</p>
       </div>
