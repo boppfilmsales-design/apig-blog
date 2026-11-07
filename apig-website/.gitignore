@@ -1,0 +1,30 @@
+# Private keys / credentials — never publish
+apig_key.pem
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+credentials*.json
+secrets*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+
+# Build pipeline internals — reproducible from source, not needed at runtime
+build/raw_images/
+build/*.log
+build/_diag*.py
+build/_probe.py
+
+# Local push cache
+build/blob_cache.json
