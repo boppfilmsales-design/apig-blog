@@ -1,0 +1,133 @@
+# -*- coding: utf-8 -*-
+"""generate full homepage index.html with all products from products.json"""
+import os, re, json
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+IMG = "https://objectstorage.us-phoenix-1.oraclecloud.com/n/axgggehgnfll/b/apig-blog-images/o/"
+
+def clean(t):
+    return re.sub(r"\s+", " ", (t or "")).strip()
+
+def short_name(n):
+    n = clean(n)
+    return n[:60]
+
+def cards_html(products):
+    out = []
+    for p in products:
+        pid = p["id"]
+        nm = short_name(p.get("name", ""))
+        out.append(
+            '<a href="product-%s.html" class="bg-white rounded-2xl shadow p-5 hover:shadow-lg transition">'
+            '<img src="%s%s_0.jpg" alt="%s" class="img-card">'
+            '<h3 class="text-lg font-bold text-green mt-4">%s</h3>'
+            '<p class="text-sm text-gray-600 mt-1">Product No. %s</p>'
+            '</a>' % (pid, IMG, pid, nm, nm, pid)
+        )
+    return "\n".join(out)
+
+def main():
+    with open(os.path.join(HERE, "products.json"), "r", encoding="utf-8") as f:
+        products = json.load(f)
+    cards = cards_html(products)
+    html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asia Pacific Industry Group | Premium BOPP &amp; BOPET Film Manufacturer</title>
+<meta name="description" content="Asia Pacific Industry Group Co., Limited - Leading manufacturer of BOPP, BOPET, CPP films and packaging materials. ISO-certified quality, serving global markets.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Inter','Noto Sans SC',sans-serif}
+.bg-green{background-color:#064e3b}
+.text-green{color:#064e3b}
+.btn-gold{background-color:#fbbf24;transition:all .3s ease}
+.btn-gold:hover{background-color:#f59e0b}
+.img-card{height:200px;object-fit:cover;width:100%;border-radius:16px;background:#f0f4f3}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+    <a href="index.html" class="font-bold text-green text-lg">ASIA PACIFIC <span class="text-yellow-600">INDUSTRY</span></a>
+    <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-600">
+      <a href="index.html" class="text-green font-bold">Home</a>
+      <a href="#products" class="hover:text-green">Products</a>
+      <a href="#about" class="hover:text-green">About</a>
+      <a href="#contact" class="hover:text-green">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="bg-green text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+    <div class="text-yellow-400 font-semibold uppercase tracking-wider mb-4">Asia Pacific Industry Group Co., Limited</div>
+    <h1 class="text-3xl md:text-5xl font-bold mb-6">Global Leader in <span class="text-yellow-400">BOPP, BOPET &amp; CPP Films</span></h1>
+    <p class="text-white/80 max-w-3xl mx-auto mb-8">Specializing in heat-seal, thermal lamination, metallized, anti-fog and window films for food, packaging, printing and industrial applications. ISO-certified quality, delivered to global markets.</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      <a href="#products" class="btn-gold text-green px-8 py-3 rounded-full font-bold inline-block">Explore Products</a>
+      <a href="#contact" class="bg-white/10 border border-white/40 px-8 py-3 rounded-full font-bold inline-block hover:bg-white/20">Get a Quote</a>
+    </div>
+  </div>
+</section>
+
+<section id="products" class="py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold text-green text-center mb-12">Our Product Line</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+@@CARDS@@
+    </div>
+  </div>
+</section>
+
+<section id="about" class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div><div class="text-3xl font-bold text-green">20+ Years</div><div class="text-gray-500 mt-1">Industry Experience</div></div>
+    <div><div class="text-3xl font-bold text-green">80+</div><div class="text-gray-500 mt-1">Countries Served</div></div>
+    <div><div class="text-3xl font-bold text-green">ISO</div><div class="text-gray-500 mt-1">Certified Quality</div></div>
+  </div>
+</section>
+
+<section id="contact" class="py-16 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="bg-green text-white p-10 rounded-2xl">
+      <h2 class="text-2xl font-bold mb-6">Contact Us</h2>
+      <div class="space-y-3 text-sm">
+        <p><strong>Company:</strong> Asia Pacific Industry Group Co., Limited</p>
+        <p><strong>Address:</strong> No.3399 Luzhou Ave., Baohe Industrial District, 230051, Hefei, Anhui, P.R. China</p>
+        <p><strong>Tel:</strong> +0086-551-64687285 / 18919654871</p>
+        <p><strong>Fax:</strong> +0086-551-64683490</p>
+        <p><strong>Mobile/WeChat/Whatsapp:</strong> 0086-18919654871 / 18919659471</p>
+        <p><strong>Email:</strong> sales@boppfilmsales.com / admin@apigcl.com</p>
+        <p><strong>Web:</strong> www.apigcl.com / www.boppfilmsales.com</p>
+        <p><strong>Skype:</strong> asiapacificsale &nbsp; <strong>QQ:</strong> 840715367</p>
+      </div>
+    </div>
+    <div class="bg-white p-10 rounded-2xl">
+      <form action="#" class="space-y-4">
+        <input type="text" placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none">
+        <input type="email" placeholder="Your Email" class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none">
+        <textarea rows="4" placeholder="Message: thickness, width, quantity, destination..." class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none"></textarea>
+        <button class="btn-gold w-full py-3 rounded-xl font-bold text-green">Send Inquiry</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="py-8 bg-white border-t text-center text-gray-500 text-sm">
+  &copy; 2026 Asia Pacific Industry Group Co., Limited. All Rights Reserved.
+</footer>
+
+</body>
+</html>
+"""
+    html = html.replace("@@CARDS@@", cards)
+    with open(os.path.join(HERE, "index.html"), "w", encoding="utf-8") as f:
+        f.write(html)
+    print("index.html generated with %d products" % len(products))
+
+if __name__ == "__main__":
+    main()
