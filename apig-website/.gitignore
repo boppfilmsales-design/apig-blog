@@ -28,3 +28,6 @@ build/_probe.py
 
 # Local push cache
 build/blob_cache.json
+
+# Cloudflare wrangler local cache
+.wrangler/
