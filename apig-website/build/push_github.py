@@ -32,8 +32,10 @@ API = "https://api.github.com/repos/%s" % REPO
 
 # Files that must never be published.
 SKIP_NAMES = {"apig_key.pem", ".DS_Store", "Thumbs.db", "blob_cache.json"}
-SKIP_DIRS = {".git", "__pycache__", "raw_images", ".venv", "venv"}
+SKIP_DIRS = {".git", "__pycache__", "raw_images", ".venv", "venv", "dist"}
 SKIP_EXT = {".pem", ".key", ".p12", ".pfx", ".log"}
+# Legacy page from the previous site build; superseded by en/ and zh/.
+SKIP_PATHS = {"about.html"}
 
 
 def request(method, url, data=None, raw=False):
@@ -82,6 +84,8 @@ def collect():
                 continue
             absolute = os.path.join(root, name)
             rel = os.path.relpath(absolute, SOURCE).replace(os.sep, "/")
+            if rel in SKIP_PATHS:
+                continue
             files["%s/%s" % (PREFIX, rel)] = absolute
     return files
 

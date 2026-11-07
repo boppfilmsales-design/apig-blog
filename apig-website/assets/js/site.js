@@ -99,4 +99,19 @@
       toc.appendChild(list);
     }
   }
+  // ------------------------------------------------------ language choice
+  // The bare domain lands on the English site. When a visitor explicitly
+  // picks a language, remember it so the root gateway honours that choice
+  // instead of guessing again.
+  var langLinks = document.querySelectorAll("[data-apig-lang]");
+  Array.prototype.forEach.call(langLinks, function (link) {
+    link.addEventListener("click", function () {
+      try {
+        localStorage.setItem("apig_lang", link.getAttribute("data-apig-lang"));
+      } catch (e) {
+        /* private mode - the gateway falls back to English */
+      }
+    });
+  });
+
 })();
