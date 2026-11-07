@@ -31,3 +31,9 @@ build/blob_cache.json
 
 # Cloudflare wrangler local cache
 .wrangler/
+
+# Legacy pages from the previous site build — superseded by en/ and zh/
+/about.html
+
+# Git build output
+/dist/
