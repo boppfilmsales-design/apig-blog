@@ -231,15 +231,17 @@ def document(ctx, title, description, body, extra_head="", canonical=None, lang_
 def header(ctx):
     c = COMPANY[ctx.lang]
     other = "zh" if ctx.lang == "en" else "en"
-    brand_name = "ASIA PACIFIC INDUSTRY GROUP" if ctx.lang == "en" else "亚太工业集团"
-    brand_sub = "BOPP &middot; BOPET &middot; CPP FILMS" if ctx.lang == "en" else "BOPP &middot; BOPET &middot; CPP 薄膜"
+    # Header text must match the live pages (brand mark "API", blog-website
+    # name/sub). Do not "modernise" it here; the live header is the reference.
+    brand_name = "ASIA PACIFIC INDUSTRY GROUP -BLOG WEBSITE" if ctx.lang == "en" else "亚太工业集团 - 博客网站"
+    brand_sub = "BOPP .BOPET.BOPS FILMS. &amp; THERMAL FILM. ADHESIVE TAPE" if ctx.lang == "en" else "BOPP .BOPET.BOPS 薄膜 . 热封膜 . 胶粘带"
     items = []
     for key, label, href in NAV[ctx.lang]:
         items.append(f'<li><a href="{ctx.page(href)}">{esc(label)}</a></li>')
     return f"""<header class="site-header">
   <div class="shell bar">
     <a class="brand" href="{ctx.home()}">
-      <span class="brand-mark">AP</span>
+      <span class="brand-mark">API</span>
       <span class="brand-text">
         <span class="brand-name">{brand_name}</span>
         <span class="brand-sub">{brand_sub}</span>
@@ -251,7 +253,7 @@ def header(ctx):
     <nav class="nav">
       <ul class="nav-list">{''.join(items)}</ul>
       <span class="lang-switch">
-        <a href="{ctx.sibling(other)}">{LANG_LABEL[other]}</a>
+        <a href="{ctx.sibling(other)}" data-apig-lang="{other}">{LANG_LABEL[other]}</a>
         <a href="{ctx.self_rel()}" class="on">{LANG_LABEL[ctx.lang]}</a>
       </span>
     </nav>
@@ -274,7 +276,7 @@ def footer(ctx):
   <div class="shell">
     <div class="footer-grid">
       <div class="footer-col footer-about">
-        <span class="brand"><span class="brand-mark">AP</span></span>
+        <span class="brand"><span class="brand-mark">API</span></span>
         <p>{esc(c['tagline'])}</p>
         <p style="font-size:13.5px">{esc(c['address'])}</p>
       </div>
