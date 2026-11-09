@@ -6,7 +6,7 @@ COMPANY = {
     "en": {
         "legal_name": "Asia Pacific Industry Group Co., Limited",
         "short_name": "Asia Pacific Industry Group",
-        "tagline": "Precision-engineered BOPP, BOPET &amp; CPP films for global packaging.",
+        "tagline": "Precision-engineered BOPP, BOPET & CPP films for global packaging.",
         "address_label": "Add.",
         "address": "No.3399 Luzhou Ave., Baohe Industrial District, 230051, Hefei city, Anhui Province, P.R. China",
         "tel_label": "Tel",
@@ -192,7 +192,7 @@ CATEGORY_CONTENT = {
                 "High optical clarity with low haze for premium shelf appeal",
                 "Stable corona treatment for reliable printing and lamination",
             ],
-            "applications": ["Flexible packaging", "Labels &amp; wrap-around labels", "Food and snack bags",
+            "applications": ["Flexible packaging", "Labels & wrap-around labels", "Food and snack bags",
                              "Shrink and overwrap film", "Book and magazine covers"],
         },
         "zh": {
@@ -214,7 +214,7 @@ CATEGORY_CONTENT = {
                 "Superior print sharpness for fine typography and barcodes",
                 "Low haze and high gloss for premium flexible packaging",
             ],
-            "applications": ["Thermal transfer ribbon base film", "Label &amp; face film",
+            "applications": ["Thermal transfer ribbon base film", "Label & face film",
                              "Metallised and vacuum-deposited structures", "Lamination for flexible packs",
                              "Electrical and industrial insulation films"],
         },

@@ -560,6 +560,11 @@ def render_product(ctx, p, products):
     name = p["name_en"] if ctx.lang == "en" else p["name_zh"]
     summary = p["summary_en"] if ctx.lang == "en" else p["summary_zh"]
     summary = clean_text(summary)[:240]
+    # Detail pages show the full product description; the short summary is
+    # kept for meta tags and catalogue cards only.
+    full_desc = clean_text(p["intro_en"]) if ctx.lang == "en" else summary
+    if not full_desc:
+        full_desc = summary
     source_items = p["items_en"] if ctx.lang == "en" else p["items_zh"]
     highlights, applications = feature_block(ctx, p)
     cat_name = p["cat_name"] if ctx.lang == "en" else p["cat_name_zh"]
@@ -612,7 +617,7 @@ def render_product(ctx, p, products):
     rel_html = "".join(product_card(ctx, r) for r in related)
 
     body = f"""
-{page_head(ctx, [(t['home'], ctx.home()), (t['products'], ctx.page('products.html')), (name, '')], name, summary)}
+{page_head(ctx, [(t['home'], ctx.home()), (t['products'], ctx.page('products.html')), (name, '')], name, full_desc)}
 <section class="section">
   <div class="shell">
     <div class="product-layout">
@@ -620,7 +625,7 @@ def render_product(ctx, p, products):
       <div class="product-head">
         <div class="product-tags">{chips}</div>
         <h1>{esc(name)}</h1>
-        <p style="font-size:15.5px;color:var(--ink-soft)">{esc(summary)}</p>
+        <p style="font-size:15.5px;color:var(--ink-soft)">{esc(full_desc)}</p>
         {f'<h2 style="font-size:16px;margin-top:26px">{esc(t["features"])}</h2><ul class="feature-list">{feat_html}</ul>' if highlights else ''}
         {f'<h2 style="font-size:16px;margin-top:26px">{esc(t["applications"])}</h2><ul class="app-list">{app_html}</ul>' if applications else ''}
         <div class="product-cta">
@@ -818,7 +823,60 @@ def render_contact(ctx):
 
 
 def render_gateway():
-    """Root index: pick a language, then leave."""
+    """Root index: pick a language, then leave.
+    Matches the live gateway page (canonical/OG tags, remembered
+    language choice via localStorage, English default)."""
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asia Pacific Industry Group Co., Limited | BOPP, BOPET &amp; CPP Films</title>
+<meta name="description" content="Asia Pacific Industry Group Co., Limited - BOPP, BOPET and CPP packaging films from Hefei, Anhui, China. Technical blog, product catalogue and contact details.">
+<link rel="canonical" href="https://blog.boppfilmsales.com/en/">
+<link rel="alternate" hreflang="en" href="https://blog.boppfilmsales.com/en/">
+<link rel="alternate" hreflang="zh-CN" href="https://blog.boppfilmsales.com/zh/">
+<link rel="alternate" hreflang="x-default" href="https://blog.boppfilmsales.com/en/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Asia Pacific Industry Group Co., Limited">
+<meta property="og:title" content="Asia Pacific Industry Group Co., Limited | BOPP, BOPET &amp; CPP Films">
+<meta property="og:description" content="BOPP, BOPET and CPP packaging films from Hefei, Anhui, China. Flexible packaging and labelling films for more than 80 countries.">
+<meta property="og:url" content="https://blog.boppfilmsales.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/site.css">
+<meta name="theme-color" content="#064e3b">
+<script>
+(function () {
+  // The English site is the default entry point for the bare domain. The
+  // Chinese site stays reachable at /zh/ and through the language switcher;
+  // a visitor only lands there again after picking it explicitly.
+  var stored = null;
+  try { stored = localStorage.getItem('apig_lang'); } catch (e) {}
+  location.replace(stored === 'zh' ? 'zh/' : 'en/');
+})();
+</script>
+</head>
+<body>
+<main id="main">
+  <section class="hero" style="min-height:82vh;display:grid;place-items:center;text-align:center">
+    <div class="shell hero-inner">
+      <span class="eyebrow" style="justify-content:center">Asia Pacific Industry Group Co., Limited</span>
+      <h1>BOPP, BOPET &amp; CPP Films</h1>
+      <p class="hero-sub" style="margin-left:auto;margin-right:auto">Hefei, Anhui, China &middot; Flexible packaging and labelling films for more than 80 countries.</p>
+      <div class="hero-actions" style="justify-content:center">
+        <a class="btn btn-gold" href="en/" onclick="try{localStorage.setItem('apig_lang','en')}catch(e){}">English site</a>
+        <a class="btn btn-line" href="zh/" onclick="try{localStorage.setItem('apig_lang','zh')}catch(e){}">中文网站</a>
+      </div>
+      <noscript><p style="margin-top:26px"><a href="en/" style="color:var(--gold)">English</a> &middot; <a href="zh/" style="color:var(--gold)">中文</a></p></noscript>
+    </div>
+  </section>
+</main>
+</body>
+</html>
+"""
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -863,7 +921,9 @@ def render_gateway():
 def write(path, content):
     full = os.path.join(HERE, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
-    with open(full, "w", encoding="utf-8") as fh:
+    # Repo stores generated pages with CRLF line endings (Windows origin);
+    # keep that format so regenerations do not rewrite every file.
+    with open(full, "w", encoding="utf-8", newline="\r\n") as fh:
         fh.write(content)
 
 
